@@ -1,0 +1,15 @@
+{
+  "exec": "ts-node -r tsconfig-paths/register ./src/index.ts",
+  "watch": [
+    "src/index.ts",
+    "src/routes/*",
+    "src/utils/*",
+    "src/types/*",
+    "src/services/*"
+  ],
+  "ignore": [
+    "src/controllers/*",
+    "src/public/*"
+  ],
+  "ext": "ts"
+}

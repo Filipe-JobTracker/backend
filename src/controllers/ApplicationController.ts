@@ -1,0 +1,88 @@
+import {
+    Get,
+    Route,
+    Post,
+    SuccessResponse,
+    Tags,
+    Response,
+    Put,
+    Body,
+    Delete
+} from "tsoa";
+import {BadRequestError} from '@/types/errors';
+import {
+    CreateApplicationForm,
+    ExtendedApplication,
+    UpdateApplicationForm
+} from "@/types/api"
+import {ApplicationService} from "@/services/ApplicationService";
+
+@Route("/api/application")
+@Tags('Application')
+export class ApplicationController {
+    /**
+     * Get all Application data
+     */
+    @Get('/')
+    @SuccessResponse(200, 'Application')
+    public async getAllApplications(): Promise<ExtendedApplication[]> {
+        return new Promise(async (resolve, _reject) => {
+            return resolve(await ApplicationService.all() as ExtendedApplication[]);
+        })
+    }
+
+    /**
+     * Get a Application by ID
+     * @param id Application ID
+     */
+    @Get('/{id}')
+    @SuccessResponse(200, 'Application found')
+    @Response(404, 'Application not found')
+    public async getApplicationById(id: string): Promise<ExtendedApplication> {
+        return new Promise(async (resolve, _reject) => {
+            return resolve(await ApplicationService.findById(id) as ExtendedApplication);
+        })
+    }
+
+    @Post('/')
+    @SuccessResponse(201, 'Application created')
+    @Response(400, 'Description is required')
+    public async createApplication(@Body() createConfigBody: CreateApplicationForm): Promise<ExtendedApplication> {
+        return new Promise(async (resolve, reject) => {
+            const {name} = createConfigBody;
+            if (!name)
+                return reject(new BadRequestError("Description is required"));
+            return resolve(await ApplicationService.create(createConfigBody) as ExtendedApplication);
+        })
+    }
+
+    @Delete('/{id}')
+    @SuccessResponse(204, 'Application deleted')
+    @Response(404, 'Application not found')
+    public async deleteApplication(id: string): Promise<ExtendedApplication> {
+        return new Promise(async (resolve, _reject) => {
+            return resolve(await ApplicationService.delete(id) as ExtendedApplication);
+        })
+    }
+
+    /**
+     * update a Application
+     * @param id
+     * @param updateConfigBody
+     */
+    @Put('/{id}')
+    @SuccessResponse(202, 'Success')
+    @Response(404, 'Application not found')
+    @Response(400, 'Description is required')
+    public async updateApplication(id: string, @Body() updateConfigBody: UpdateApplicationForm): Promise<ExtendedApplication> {
+        // console.log(id);
+        // console.log(updateConfigBody);
+        return new Promise(async (resolve, reject) => {
+            const {status} = updateConfigBody;
+            if (!status)
+                return reject(new BadRequestError("Status is required"));
+            return resolve(await ApplicationService.update(id, updateConfigBody) as ExtendedApplication);
+        })
+    }
+}
+

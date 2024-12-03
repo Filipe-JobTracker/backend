@@ -1,0 +1,5 @@
+{
+  "exec": "npm run generate",
+  "watch": ["src/controllers/*Controller.ts"],
+  "ext": "ts"
+}
