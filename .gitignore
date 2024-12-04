@@ -1,6 +1,5 @@
 .env
 .idea
 node_modules/
-prisma/migrations/
 public/swagger.json
 dist/
