@@ -3,4 +3,4 @@
 node_modules/
 public/swagger.json
 dist/
-routes/routes.ts
+src/routes/routes.ts
