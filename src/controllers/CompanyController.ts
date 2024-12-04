@@ -5,9 +5,7 @@ import {
     SuccessResponse,
     Tags,
     Response,
-    Put,
     Body,
-    Delete
 } from "tsoa";
 import {BadRequestError, ExistingError} from '@/types/errors';
 import {CreateCompanyForm} from "@/types/api"
@@ -22,22 +20,9 @@ export class CompanyController {
      */
     @Get('/')
     @SuccessResponse(200, 'Company')
-    public async getAllCompanys(): Promise<Company[]> {
-        return new Promise(async (resolve, reject) => {
+    public async getAllCompanies(): Promise<Company[]> {
+        return new Promise(async (resolve, _reject) => {
             return resolve(await CompanyService.all() as Company[]);
-        })
-    }
-
-    /**
-     * Get a Company by ID
-     * @param id Company ID
-     */
-    @Get('/{id}')
-    @SuccessResponse(200, 'Company found')
-    @Response(404, 'Company not found')
-    public async getCompanyById(id: string): Promise<Company> {
-        return new Promise(async (resolve, reject) => {
-            return resolve(await CompanyService.findById(id) as Company);
         })
     }
 
@@ -62,33 +47,6 @@ export class CompanyController {
                     return reject(new BadRequestError("Company already exists"));
                 }
             }
-        })
-    }
-
-    @Delete('/{id}')
-    @SuccessResponse(204, 'Company deleted')
-    @Response(404, 'Company not found')
-    public async deleteCompany(id: string): Promise<Company> {
-        return new Promise(async (resolve, reject) => {
-            return resolve(await CompanyService.delete(id) as Company);
-        })
-    }
-
-    /**
-     * update a Company
-     * @param id
-     * @param updateConfigBody
-     */
-    @Put('/{id}')
-    @SuccessResponse(202, 'Success')
-    @Response(404, 'Company not found')
-    @Response(400, 'Description is required')
-    public async updateCompany(id: string, @Body() updateConfigBody: CreateCompanyForm): Promise<Company> {
-        return new Promise(async (resolve, reject) => {
-            const {name} = updateConfigBody;
-            if (!name)
-                return reject(new BadRequestError("Description is required"));
-            return resolve(await CompanyService.update(id, updateConfigBody) as Company);
         })
     }
 }

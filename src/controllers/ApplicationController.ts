@@ -7,7 +7,6 @@ import {
     Response,
     Put,
     Body,
-    Delete
 } from "tsoa";
 import {BadRequestError} from '@/types/errors';
 import {
@@ -53,15 +52,6 @@ export class ApplicationController {
             if (!name)
                 return reject(new BadRequestError("Description is required"));
             return resolve(await ApplicationService.create(createConfigBody) as ExtendedApplication);
-        })
-    }
-
-    @Delete('/{id}')
-    @SuccessResponse(204, 'Application deleted')
-    @Response(404, 'Application not found')
-    public async deleteApplication(id: string): Promise<ExtendedApplication> {
-        return new Promise(async (resolve, _reject) => {
-            return resolve(await ApplicationService.delete(id) as ExtendedApplication);
         })
     }
 
