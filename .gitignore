@@ -4,4 +4,3 @@ node_modules/
 public/swagger.json
 dist/
 src/routes/routes.ts
-prisma/migrations/**/migration.sql
