@@ -1,5 +1,5 @@
 {
-  "name": "Filipe-JobTracker/backend",
+  "name": "job_tracker_backend",
   "version": "0.0.1",
   "description": "A simple backend for a Job Tracking web application",
   "main": "index.ts",
