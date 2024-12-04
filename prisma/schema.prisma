@@ -17,6 +17,7 @@ enum ApplicationStatus {
   OFFER
   CALLED
   ACCEPTED
+  TECHNICAL
 }
 
 model Config {
