@@ -9,7 +9,8 @@
     "start": "node -r tsconfig-paths/register dist/index.js",
     "generate:spec": "tsoa spec",
     "generate:routes": "tsoa routes",
-    "generate": "tsoa spec-and-routes"
+    "generate": "tsoa spec-and-routes",
+    "prod": "prisma migrate deploy && npm run start"
   },
   "author": "Filipe Figueiredo",
   "license": "MIT",
