@@ -5,7 +5,7 @@ import {
     ImportApplicationForm,
     UpdateApplicationForm
 } from "@/types/api.d";
-import {Application, ApplicationStatus} from "@prisma/client";
+import {ApplicationStatus} from "@prisma/client";
 import {NotFoundError} from "@/types/errors";
 import {CompanyService} from "@/services/CompanyService";
 
