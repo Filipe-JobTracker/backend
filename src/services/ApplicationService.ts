@@ -1,6 +1,9 @@
 import {db} from "@/utils/db";
 import {
-    CreateApplicationForm, ExtendedApplication, UpdateApplicationForm
+    CreateApplicationForm,
+    ExtendedApplication,
+    ImportApplicationForm,
+    UpdateApplicationForm
 } from "@/types/api.d";
 import {Application, ApplicationStatus} from "@prisma/client";
 import {NotFoundError} from "@/types/errors";
@@ -61,6 +64,37 @@ export class ApplicationService {
         });
     }
 
+    public static async import(body: ImportApplicationForm): Promise<ExtendedApplication> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let company = await CompanyService.findByName(body.company.name);
+                if (!company) {
+                    company = await CompanyService.create({name: body.company.name});
+                }
+                const {company:companyObj, ...rest} = body;
+                let {status} = rest;
+                if (!status)
+                    status = ApplicationStatus.APPLIED;
+                const data = {status, ...rest};
+
+                const application = await this.dbService.create({
+                    data: {
+                        companyId: company.id, ...data,
+                    },
+                });
+                await db.applicationStatusHistory.create({
+                    data: {
+                        applicationId: application.id,
+                        status: application.status,
+                    }
+                })
+                return resolve(await ApplicationService.findById(application.id));
+            } catch (e) {
+                return reject(e);
+            }
+        })
+    }
+
     public static async create(data: CreateApplicationForm): Promise<ExtendedApplication> {
         return new Promise(async (resolve, reject) => {
             try {
@@ -82,7 +116,7 @@ export class ApplicationService {
                 })
                 return resolve(await ApplicationService.findById(application.id));
             } catch (e) {
-                reject(e);
+                return  reject(e);
             }
         });
 

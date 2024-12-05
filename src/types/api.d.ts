@@ -50,3 +50,11 @@ export interface ExtendedApplication extends Omit<Application, 'companyId'> {
     company: Company;
     statusHistory: Omit<ApplicationStatusHistory, 'applicationId'>[];
 }
+
+export interface ImportApplicationForm extends CreateCompanyForm{
+    company: Company;
+    name: string;
+    link: string;
+    appliedAt: Date;
+    status?: ApplicationStatus;
+}

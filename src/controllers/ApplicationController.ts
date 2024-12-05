@@ -12,6 +12,7 @@ import {BadRequestError} from '@/types/errors';
 import {
     CreateApplicationForm,
     ExtendedApplication,
+    ImportApplicationForm,
     UpdateApplicationForm
 } from "@/types/api"
 import {ApplicationService} from "@/services/ApplicationService";
@@ -52,6 +53,17 @@ export class ApplicationController {
             if (!name)
                 return reject(new BadRequestError("Description is required"));
             return resolve(await ApplicationService.create(createConfigBody) as ExtendedApplication);
+        })
+    }
+
+    /**
+     * Import an application directly from an CSV file
+     * @param body
+     */
+    @Post('/import')
+    public async importApplication(@Body() body: ImportApplicationForm): Promise<ExtendedApplication> {
+        return new Promise(async (resolve, _reject) => {
+            return resolve(await ApplicationService.import(body) as ExtendedApplication);
         })
     }
 
