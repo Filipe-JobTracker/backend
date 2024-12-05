@@ -10,14 +10,15 @@ datasource db {
 }
 
 enum ApplicationStatus {
-  GHOSTED
-  REJECTED
-  APPLIED
-  INTERVIEW
   OFFER
   CALLED
+  APPLIED
+  GHOSTED
+  REJECTED
   ACCEPTED
-  TECHNICAL
+  INTERVIEW
+  TECHNICAL_TEST
+  TECHNICAL_INTERVIEW
 }
 
 model Config {
