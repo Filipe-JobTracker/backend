@@ -12,14 +12,11 @@ export class CompanyService {
 
     public static async findByName(name: string): Promise<Company> {
         return new Promise(async (resolve, reject) => {
-            console.log("name: ", name)
             const data = await this.dbService.findUnique({
                 where: {
                     name,
                 },
             });
-            if (data === null)
-                reject(new NotFoundError('Company not found'));
             return resolve(data as Company);
         });
     }
