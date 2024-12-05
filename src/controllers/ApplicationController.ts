@@ -17,6 +17,8 @@ import {
 } from "@/types/api"
 import {ApplicationService} from "@/services/ApplicationService";
 
+const NAME_REQUIRED_ERR = '\'name\' is required';
+
 @Route("/api/application")
 @Tags('Application')
 export class ApplicationController {
@@ -46,12 +48,12 @@ export class ApplicationController {
 
     @Post('/')
     @SuccessResponse(201, 'Application created')
-    @Response(400, 'Description is required')
+    @Response(400, NAME_REQUIRED_ERR)
     public async createApplication(@Body() createConfigBody: CreateApplicationForm): Promise<ExtendedApplication> {
         return new Promise(async (resolve, reject) => {
             const {name} = createConfigBody;
             if (!name)
-                return reject(new BadRequestError("Description is required"));
+                return reject(new BadRequestError(NAME_REQUIRED_ERR));
             return resolve(await ApplicationService.create(createConfigBody) as ExtendedApplication);
         })
     }
@@ -75,10 +77,8 @@ export class ApplicationController {
     @Put('/{id}')
     @SuccessResponse(202, 'Success')
     @Response(404, 'Application not found')
-    @Response(400, 'Description is required')
+    @Response(400, NAME_REQUIRED_ERR)
     public async updateApplication(id: string, @Body() updateConfigBody: UpdateApplicationForm): Promise<ExtendedApplication> {
-        // console.log(id);
-        // console.log(updateConfigBody);
         return new Promise(async (resolve, reject) => {
             const {status} = updateConfigBody;
             if (!status)
