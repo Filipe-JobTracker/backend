@@ -24,33 +24,47 @@ export class CompanyController {
     @Get('/')
     @SuccessResponse(200, 'Company')
     public async getAllCompanies(): Promise<Company[]> {
-        return new Promise(async (resolve, _reject) => {
-            return resolve(await CompanyService.all() as Company[]);
-        })
+            return  CompanyService.all();
     }
 
     @Post('/')
     @SuccessResponse(201, 'Company created')
     @Response(400, MISSING_NAME_COMPANY_ERR)
     public async createCompany(@Body() createConfigBody: CreateCompanyForm): Promise<Company> {
-        return new Promise(async (resolve, reject) => {
-            const {name} = createConfigBody;
-            if (!name)
-                return reject(new BadRequestError(MISSING_NAME_COMPANY_ERR));
-            try {
-                if (await CompanyService.findByName(name) !== null)
-                    return reject(new BadRequestError(EXISTING_COMPANY_ERR));
-            } catch (e) {
-                console.error(e);
-            }
-            try {
-                return resolve(await CompanyService.create(createConfigBody) as Company);
-            } catch (e) {
-                if (e instanceof ExistingError) {
-                    return reject(new BadRequestError(EXISTING_COMPANY_ERR));
-                }
-            }
-        })
+        const {name} = createConfigBody;
+        if (!name) {
+            throw new BadRequestError(MISSING_NAME_COMPANY_ERR);
+        }
+        // const existingCompany = await CompanyService.findByName(name);
+        // if (existingCompany) {
+        //     throw new BadRequestError(EXISTING_COMPANY_ERR);
+        // }
+        try {
+            return CompanyService.create(createConfigBody);
+        } catch (e) {
+            console.error(e);
+            return CompanyService.findByName(createConfigBody.name);
+        }
     }
+    // public async createCompany(@Body() createConfigBody: CreateCompanyForm): Promise<Company> {
+    //     return new Promise(async (resolve, reject) => {
+    //         const {name} = createConfigBody;
+    //         if (!name)
+    //             return reject(new BadRequestError(MISSING_NAME_COMPANY_ERR));
+    //         try {
+    //             if (await CompanyService.findByName(name) !== null)
+    //                 return reject(new BadRequestError(EXISTING_COMPANY_ERR));
+    //         } catch (e) {
+    //             console.error(e);
+    //         }
+    //         try {
+    //             return resolve(await CompanyService.create(createConfigBody) as Company);
+    //         } catch (e) {
+    //             if (e instanceof ExistingError) {
+    //                 return reject(new BadRequestError(EXISTING_COMPANY_ERR));
+    //             }
+    //         }
+    //     })
+    // }
 }
 
