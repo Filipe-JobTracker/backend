@@ -11,14 +11,13 @@ export function errorHandlerMiddleware(err: IError, req: Request, res: Response,
             message: "Validation Failed",
             details: err?.fields,
         });
-        return next() ;
+        return;
     }
 
     if (err.statusCode && err.statusCode >= 400 && err.statusCode < 600) {
         res.status(err.statusCode).json({
             message: err.message,
         });
-        next() ;
         return ;
     }
 
@@ -26,7 +25,6 @@ export function errorHandlerMiddleware(err: IError, req: Request, res: Response,
     res.status(500).json({
         message: "Internal Server Error",
     });
-    next() ;
     // return ;
     // logger.error(`From ${req.ip} at ${req.path}:\n${err.stack}`);
     // let data;
