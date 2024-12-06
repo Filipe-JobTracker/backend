@@ -40,7 +40,7 @@ model Company {
 model ApplicationStatusHistory {
   id            String            @id @default(uuid())
   applicationId String
-  application   Application       @relation(fields: [applicationId], references: [id])
+  application   Application       @relation(fields: [applicationId], references: [id], onDelete: Cascade)
   status        ApplicationStatus
   changedAt     DateTime          @default(now())
 }
@@ -52,7 +52,7 @@ model Application {
   active        Boolean                    @default(true)
   status        ApplicationStatus          @default(APPLIED)
   companyId     String
-  company       Company                    @relation(fields: [companyId], references: [id])
+  company       Company                    @relation(fields: [companyId], references: [id], onDelete: Cascade)
   appliedAt     DateTime                   @default(now())
   lastUpdate    DateTime                   @default(now()) @updatedAt
   statusHistory ApplicationStatusHistory[]
