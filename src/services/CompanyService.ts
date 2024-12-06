@@ -1,7 +1,6 @@
 import {db} from "@/utils/db";
 import {CreateCompanyForm} from "@/types/api.d";
 import {Company} from "@prisma/client";
-import {ExistingError, NotFoundError} from "@/types/errors";
 
 export class CompanyService {
     private static dbService = db.company;

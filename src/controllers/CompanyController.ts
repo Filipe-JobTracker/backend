@@ -7,12 +7,11 @@ import {
     Response,
     Body,
 } from "tsoa";
-import {BadRequestError, ExistingError} from '@/types/errors';
+import {BadRequestError} from '@/types/errors';
 import {CreateCompanyForm} from "@/types/api"
 import {Company} from "@prisma/client";
 import {CompanyService} from "@/services/CompanyService";
 
-const EXISTING_COMPANY_ERR = 'Company already exists';
 const MISSING_NAME_COMPANY_ERR = 'Company name is required';
 
 @Route("/api/company")

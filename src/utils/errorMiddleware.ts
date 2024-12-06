@@ -1,9 +1,9 @@
-import {Request, Response, NextFunction} from 'express';
+import {Request, Response} from 'express';
 import logger from "../utils/logger";
 import {IError} from "@/types/errors";
 import {ValidateError} from "tsoa";
 
-export function errorHandlerMiddleware(err: IError, req: Request, res: Response, next: NextFunction) {
+export function errorHandlerMiddleware(err: IError, req: Request, res: Response) {
 
     if (err instanceof ValidateError) {
         logger.warn(`Caught Validation Error for ${req.path}:`, err.fields);
