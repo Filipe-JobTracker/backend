@@ -25,19 +25,5 @@ export function errorHandlerMiddleware(err: IError, req: Request, res: Response)
     res.status(500).json({
         message: "Internal Server Error",
     });
-    // logger.error(`From ${req.ip} at ${req.path}:\n${err.stack}`);
-    // return ;
-    // let data;
-    // if (process.env.NODE_ENV === 'development') {
-    //     data = {
-    //         error: err.message,
-    //         stack: err.stackError
-    //     }
-    // } else {
-    //     data = {
-    //         error: err.message
-    //     }
-    // }
-    // res.status(err.statusCode).json(data);
 }
 
