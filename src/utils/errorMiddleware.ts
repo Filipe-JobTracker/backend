@@ -3,7 +3,7 @@ import logger from "../utils/logger";
 import {IError} from "@/types/errors";
 import {ValidateError} from "tsoa";
 
-export function errorHandlerMiddleware(err: IError, req: Request, res: Response) {
+export function errorHandlerMiddleware(err: Error, req: Request, res: Response) {
 
     if (err instanceof ValidateError) {
         logger.warn(`Caught Validation Error for ${req.path}:`, err.fields);
@@ -14,7 +14,7 @@ export function errorHandlerMiddleware(err: IError, req: Request, res: Response)
         return;
     }
 
-    if (err.statusCode && err.statusCode >= 400 && err.statusCode < 600) {
+    if (err instanceof IError && err.statusCode && err.statusCode >= 400 && err.statusCode < 600) {
         res.status(err.statusCode).json({
             message: err.message,
         });
